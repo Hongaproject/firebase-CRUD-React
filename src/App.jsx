@@ -6,6 +6,8 @@ import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 // 객체형 라우터 구성방식
 const router = createBrowserRouter([ // 배열로 routes를 전달한다. 이 부분을 하나로 묶기 위해 
@@ -33,13 +35,27 @@ const router = createBrowserRouter([ // 배열로 routes를 전달한다. 이 �
   }
 ])
 
+const GlobalStyles = createGlobalStyle`
+  ${reset}; // styled-reset를 사용하여 기본 스타일을 초기화 시킨다.
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background-color: black;
+    color: white;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+`;
+
 // RouterProvider은 router라는 필수 속성을 가지고있고 createBrowserRouter로 만든것을 뒤에 붙여주면 됩니다. 
 function App() {
   return (
     <div>
+      <GlobalStyles />
       <RouterProvider router={router} />
     </div>
   );
 }
 
 export default App;
+
