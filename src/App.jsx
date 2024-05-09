@@ -10,6 +10,7 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./componments/loading-screen";
+import { auth } from "./firebase";
 
 // 객체형 라우터 구성방식
 const router = createBrowserRouter([ // 배열로 routes를 전달한다. 이 부분을 하나로 묶기 위해 
@@ -54,7 +55,7 @@ function App() {
 
   const [isLoding, setIsLoding] = useState(true); // 로딩 화면 만들기, 파이어베이스가 유저 체크하는 동안 잠시 로딩화면 보여주려고 제작
   const init = async() => {
-    // 아직 파이어베이스를 설치하지 않음 
+    await auth.authStateReady(); // 로그인 여부를 확인하는 동안 기다린다는 코드.
     setIsLoding(false);
     // setTimeout(()=> setIsLoding(false), 2000); // 확인 용으로 코드 해놈.
   }
