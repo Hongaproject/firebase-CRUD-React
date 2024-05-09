@@ -8,6 +8,8 @@ import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import { useEffect, useState } from "react";
+import LoadingScreen from "./componments/loading-screen";
 
 // 객체형 라우터 구성방식
 const router = createBrowserRouter([ // 배열로 routes를 전달한다. 이 부분을 하나로 묶기 위해 
@@ -49,10 +51,24 @@ const GlobalStyles = createGlobalStyle`
 
 // RouterProvider은 router라는 필수 속성을 가지고있고 createBrowserRouter로 만든것을 뒤에 붙여주면 됩니다. 
 function App() {
+
+  const [isLoding, setIsLoding] = useState(true); // 로딩 화면 만들기, 파이어베이스가 유저 체크하는 동안 잠시 로딩화면 보여주려고 제작
+  const init = async() => {
+    // 아직 파이어베이스를 설치하지 않음 
+    setIsLoding(false);
+    // setTimeout(()=> setIsLoding(false), 2000); // 확인 용으로 코드 해놈.
+  }
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <div>
       <GlobalStyles />
-      <RouterProvider router={router} />
+      {
+        isLoding ? <LoadingScreen /> : <RouterProvider router={router} /> 
+      }
     </div>
   );
 }
