@@ -1,5 +1,8 @@
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import styled from "styled-components";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     height: 100%;
@@ -50,6 +53,7 @@ function CreateAccount() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [err, setErr] = useState("");
+    const navigator = useNavigate();
 
     const onChange = (e) => { // 이렇게 하면 input이 변경 되었을 때 어떤 input이 변경되었는지 찾을 수 있다.
         const {target: {name, value}} = e;
@@ -62,12 +66,18 @@ function CreateAccount() {
         }
     }
 
-    const onSubmit = (e) => { 
+    const onSubmit = async(e) => { 
         e.preventDefault();
+        if(isLoading || name === "" || email === "" || password === "") return; // 이름, 이메일, 비밀번호가 비어있는지 확인하는 용도
         try{
-
+            setLoading(true);
+            const credentials = await createUserWithEmailAndPassword(auth, email, password); // email과 password를 이용해서 사용자 생성을 해준다. 
+            console.log(credentials.user);
+            await updateProfile(credentials.user, { // 닉네임 수정을 가능하게 해준다.
+                displayName: name,
+            });
+            navigator("/");
         } catch(e){
-
         } finally{
             setLoading(false);
         }
@@ -75,7 +85,7 @@ function CreateAccount() {
 
     return(
         <Wrapper>
-            <Title>Log into 🙌</Title>
+            <Title>Join 🙌</Title>
             <Form onSubmit={onSubmit}>
                 <Input name="name" value={name} onChange={onChange} placeholder="Name" type="text" required />
                 <Input name="email" value={email} onChange={onChange} placeholder="Email" type="email" required />
