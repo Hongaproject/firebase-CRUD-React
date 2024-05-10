@@ -72,7 +72,6 @@ function CreateAccount() {
         try{
             setLoading(true);
             const credentials = await createUserWithEmailAndPassword(auth, email, password); // email과 password를 이용해서 사용자 생성을 해준다. 
-            console.log(credentials.user);
             await updateProfile(credentials.user, { // 닉네임 수정을 가능하게 해준다.
                 displayName: name,
             });

@@ -11,21 +11,27 @@ import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./componments/loading-screen";
 import { auth } from "./firebase";
+import ProtectedRoute from "./componments/protected-route";
 
 // 객체형 라우터 구성방식
 const router = createBrowserRouter([ // 배열로 routes를 전달한다. 이 부분을 하나로 묶기 위해 
   { // 여기 부분은 Layout부분 요소 홈이랑 프로필 부분만 보여지게 할 것 
     path: "/",
-    element: <Layout />, // 이렇게 되면 Layout부분에 있는 Outlet밑에 children에 있는 컴포넌트들을 불러올 수 있다.
+    // element: <Layout />, // 이렇게 되면 Layout부분에 있는 Outlet밑에 children에 있는 컴포넌트들을 불러올 수 있다.
+    element: ( // 이렇게 하면 Home, Profile부분에 ProtectedRoute를 안감싸도 되고 Layout만 감싸도 Home, Profile부분이 안보이게 된다.
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [ // children을 사용해서 route를 추가해준다. 
       {
         path: "",
-        element: <Home />,
+        element: <Home />
       },
       {
         path: "/profile",
-        element: <Profile />,
-      }
+        element: <Profile />
+      },
     ]
   },
   {
