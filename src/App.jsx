@@ -6,7 +6,7 @@ import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./componments/loading-screen";
@@ -50,6 +50,12 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
+
 // RouterProvider은 router라는 필수 속성을 가지고있고 createBrowserRouter로 만든것을 뒤에 붙여주면 됩니다. 
 function App() {
 
@@ -65,12 +71,12 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <Wrapper>
       <GlobalStyles />
       {
         isLoding ? <LoadingScreen /> : <RouterProvider router={router} /> 
       }
-    </div>
+    </Wrapper>
   );
 }
 
