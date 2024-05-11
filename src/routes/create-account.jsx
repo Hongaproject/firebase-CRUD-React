@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 const Wrapper = styled.div`
     height: 100%;
@@ -20,6 +21,7 @@ const Title = styled.h1`
 
 const Form = styled.form`
     margin-top: 50px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -68,6 +70,7 @@ function CreateAccount() {
 
     const onSubmit = async(e) => { 
         e.preventDefault();
+        setErr(""); // 에러메세지가 뜬 상태로 클릭하면 초기화 되서 다시 렌더링 되게 해줌. 
         if(isLoading || name === "" || email === "" || password === "") return; // 이름, 이메일, 비밀번호가 비어있는지 확인하는 용도
         try{
             setLoading(true);
@@ -77,6 +80,9 @@ function CreateAccount() {
             });
             navigator("/");
         } catch(e){
+            if(e instanceof FirebaseError){
+                setErr(e.message);
+            }
         } finally{
             setLoading(false);
         }
@@ -88,7 +94,7 @@ function CreateAccount() {
             <Form onSubmit={onSubmit}>
                 <Input name="name" value={name} onChange={onChange} placeholder="Name" type="text" required />
                 <Input name="email" value={email} onChange={onChange} placeholder="Email" type="email" required />
-                <Input name="password" value={password} onChange={onChange} placeholder="Password" type="password" required />
+                <Input name="password" value={password} onChange={onChange} placeholder="Password 6자리 이상" type="password" required />
                 <Input type="submit" value={isLoading ? "Loding..." : "Create Account"} />
             </Form>
             {err !== "" ? <Error>{err}</Error> : null}
