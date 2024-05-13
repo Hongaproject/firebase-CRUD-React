@@ -1,4 +1,7 @@
+import { GithubAuthProvider, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import styled from "styled-components";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const Button = styled.span`
   margin-top: 50px;
@@ -22,8 +25,15 @@ const Logo = styled.img`
 
 function GithubBtn () {
 
-    const onClick = () => {
-
+    const navigator = useNavigate();
+    const onClick = async () => {
+        try {
+            const provider = new GithubAuthProvider();
+            await signInWithPopup(auth, provider); // 버튼 클릭시 팝업이 열리면서 로그인여부를 물어본다.
+            navigator("/");
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return(
@@ -35,3 +45,4 @@ function GithubBtn () {
 }
 
 export default GithubBtn;
+
