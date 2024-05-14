@@ -67,6 +67,9 @@ function App() {
 
   const [isLoding, setIsLoding] = useState(true); // 로딩 화면 만들기, 파이어베이스가 유저 체크하는 동안 잠시 로딩화면 보여주려고 제작
   const init = async() => {
+    // auth를 받아오고 사용자의 로그인 여부를 알 수 있고 확인 했다면
+    // setIsLoading을 false로 설정, 사용자를 router로 이동시킨다.
+    // router로 이동시에 사용자가 어떤 상태냐에 따라 로그인 화면, 계정생성, 홈화면 등으로 이동 된다.
     await auth.authStateReady(); // 로그인 여부를 확인하는 동안 기다린다는 코드.
     setIsLoding(false);
     // setTimeout(()=> setIsLoding(false), 2000); // 확인 용으로 코드 해놈.

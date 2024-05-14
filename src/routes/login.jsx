@@ -8,14 +8,15 @@ import GithubBtn from "../componments/github-btn";
 
 
 function Login() {
-    
+    // form으로 부터 이메일과 암호를 가져오는 것 뿐
+
     const [isLoading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [err, setErr] = useState("");
     const navigator = useNavigate();
 
-    const onChange = (e) => { // 이렇게 하면 input이 변경 되었을 때 어떤 input이 변경되었는지 찾을 수 있다.
+    const onChange = (e) => { // 이렇게 하면 input이 변경 되었을 때 어떤 input이 변경되었는지 찾을 수 있다. 데이터를 state에 올리는 코드
         const {target: {name, value}} = e;
         if(name === "email") {
             setEmail(value)
@@ -24,7 +25,7 @@ function Login() {
         }
     }
 
-    const onSubmit = async(e) => { 
+    const onSubmit = async(e) => { // 사용자가 form이용하면 이때 작성해놓은 함수를 실행시킨다. 
         e.preventDefault();
         setErr(""); // 에러메세지가 뜬 상태로 클릭하면 초기화 되서 다시 렌더링 되게 해줌. 
         if(isLoading || email === "" || password === "") return; // 이름, 이메일, 비밀번호가 비어있는지 확인하는 용도
