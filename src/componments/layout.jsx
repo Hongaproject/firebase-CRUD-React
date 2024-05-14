@@ -1,5 +1,6 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { auth } from "../firebase";
 
 // Outlet은 react-router-dom v6.4에 등장 했으며 중첩 라우팅을 지원해준다.
 // App파일 부분에 createBrowserRouter를 사용하여 라우터를 생성했는데 Outlet을 사용하면
@@ -46,6 +47,15 @@ const MenuItem = styled.div`
 
 function Layout(){
     // heroicons.dev
+    const navigator = useNavigate();
+
+    const onLogOut = async () => {
+        const ok = window.confirm("로그아웃을 하시겠습니까?");
+        if(ok){ // 클릭시에 로그아웃을 진행한다.
+            await auth.signOut();
+            navigator("/login");
+        }   
+    }
 
     return(
         <Wrapper>
@@ -78,7 +88,7 @@ function Layout(){
                         </svg>
                     </MenuItem>
                 </Link>
-                <MenuItem className="log-out">
+                <MenuItem className="log-out" onClick={onLogOut}>
                     <svg
                         fill="currentColor"
                         viewBox="0 0 20 20"
