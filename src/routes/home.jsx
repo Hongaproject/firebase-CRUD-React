@@ -1,16 +1,16 @@
-import { auth } from "../firebase";
+import styled from "styled-components";
+import PostTweetForm from "../componments/post-tweet-form";
+
+const Wrapper = styled.div`
+    
+`
 
 function Home() {
 
-    const logOut = () => {
-        auth.signOut();
-    }
-
     return(
-        <div>
-            홈 입니다.
-            <button onClick={logOut}>로그아웃</button>
-        </div>
+        <Wrapper>
+            <PostTweetForm />
+        </Wrapper>
     );
 }
 
