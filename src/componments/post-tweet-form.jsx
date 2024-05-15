@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -57,12 +58,28 @@ const SubmitBtn = styled.input`
 
 function PostTweetForm() {
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [tweet, setTweet] = useState("");
+  const [file,setFile] = useState(null);
+
+  const onChange = (e) => {
+    setTweet(e.target.value);
+  };
+  
+  const onFileChange = (e) => {
+    const {files} = e.target;
+    if(files && files.length === 1){ // 여러 사진을 올리지 못하게 1개만 올리게 하려고 작성한 코드.
+      setFile(files[0]);
+    }
+  };
+
+
     return(
         <Form>
-            <TextArea placeholder="글을 작성해 주세요."/>
-            <AttachFileButton htmlFor="file">사진 업로드</AttachFileButton>
-            <AttachFileInput type="file" id="file" accept="image/*" />
-            <SubmitBtn type="submit" value="Post Tweet"/>
+            <TextArea rows={5} maxLength={500} value={tweet} onChange={onChange} placeholder="글을 작성해 주세요."/>
+            <AttachFileButton htmlFor="file">{file ? "업로드 ✅"  : "사진 업로드"}</AttachFileButton>
+            <AttachFileInput onChange={onFileChange} type="file" id="file" accept="image/*" />
+            <SubmitBtn type="submit" value={isLoading ? "Posting..." : "Post Tweet"} />
         </Form>
 
     )
