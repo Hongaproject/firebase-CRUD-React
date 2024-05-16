@@ -64,6 +64,7 @@ function PostTweetForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [tweet, setTweet] = useState("");
   const [file,setFile] = useState(null);
+  const maxSize = 5 * 1024 * 1024; // 5MB
 
   const onChange = (e) => {
     setTweet(e.target.value);
@@ -71,6 +72,10 @@ function PostTweetForm() {
   
   const onFileChange = (e) => {
     const {files} = e.target;
+    if(files && files[0].size > maxSize){
+      alert("5MB가 넘습니다.");
+      return;
+    }
     if(files && files.length === 1){ // 여러 사진을 올리지 못하게 1개만 올리게 하려고 작성한 코드.
       setFile(files[0]);
     }
@@ -108,7 +113,7 @@ function PostTweetForm() {
     return(
         <Form onSubmit={onSubmit}>
             <TextArea rows={5} maxLength={500} value={tweet} onChange={onChange} placeholder="글을 작성해 주세요." required/>
-            <AttachFileButton htmlFor="file">{file ? "업로드 ✅"  : "사진 업로드"}</AttachFileButton>
+            <AttachFileButton htmlFor="file">{file ? "업로드 ✅"  : "5MB미만 용량인 사진만 업로드 가능합니다."}</AttachFileButton>
             <AttachFileInput onChange={onFileChange} type="file" id="file" accept="image/*" />
             <SubmitBtn type="submit" value={isLoading ? "Posting..." : "Post Tweet"} />
         </Form>
