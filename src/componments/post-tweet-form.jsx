@@ -1,7 +1,8 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import styled from "styled-components";
-import { auth, db } from "../firebase";
+import { auth, db, storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Form = styled.form`
   display: flex;
@@ -81,13 +82,23 @@ function PostTweetForm() {
     if(!user || isLoading || tweet === "" || tweet.length > 180) return; // 로딩 중인지, 트윗이 비었는지, 트윗길이가 500자 보다 많은지 확인 용으로 코드를 짬. 로그인 여부도 확인한다.
     try {
       setIsLoading(true);
-      await addDoc(collection(db, "tweets"), { // 이미 만들어진 tweets라는 컬렉션안에 파이어베이스 내장함수addDoc를 사용해서 새로운 document를 생성해준다. -> database에 document가 있는데 그 부분을 생성시켜주는 코드
+      const doc = await addDoc(collection(db, "tweets"), { // 이미 만들어진 tweets라는 컬렉션안에 파이어베이스 내장함수addDoc를 사용해서 새로운 document를 생성해준다. -> database에 document가 있는데 그 부분을 생성시켜주는 코드
         tweet, // 작성한 내용.
         createdAT: Date.now(), // 생성을 언제했는지 확인하기 위해 만듬.
         username: user.displayName || "Anonymous", // displayName이 없다면 익명으로 보여준다.
         userId: user.uid, // 트윗이 내껀지 확인하기 및 삭제 하기 위해 만든 코드.
-      }) 
-    } catch (err) {
+      });
+      if(file){ // 이미지 첨부시 이 경로로 저장이된다. 
+        const locationRef = ref(storage, `tweets/${user.uid}-${user.displayName}/${doc.id}`); //  tweet 폴더를 생성하고 / 유저 아이디 - 유저 이름 / 문서 id
+        const result = await uploadBytes(locationRef, file); // locationRef에 넣는다. 
+        const url = await getDownloadURL(result.ref);
+        await updateDoc(doc, {
+          photo: url,
+        });
+      }
+      setTweet("");
+      setFile(null);
+    } catch (err) { 
       console.log(err);
     } finally {
       setIsLoading(false);
@@ -96,7 +107,7 @@ function PostTweetForm() {
 
     return(
         <Form onSubmit={onSubmit}>
-            <TextArea rows={5} maxLength={500} value={tweet} onChange={onChange} placeholder="글을 작성해 주세요."/>
+            <TextArea rows={5} maxLength={500} value={tweet} onChange={onChange} placeholder="글을 작성해 주세요." required/>
             <AttachFileButton htmlFor="file">{file ? "업로드 ✅"  : "사진 업로드"}</AttachFileButton>
             <AttachFileInput onChange={onFileChange} type="file" id="file" accept="image/*" />
             <SubmitBtn type="submit" value={isLoading ? "Posting..." : "Post Tweet"} />
