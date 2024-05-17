@@ -25,7 +25,7 @@ const Payload = styled.p`
   margin: 10px 0px;
   font-size: 18px;
 `;
-
+ 
 function Tweet ({username, tweet, photo}) {
     return(
         <Wrapper>
@@ -33,11 +33,11 @@ function Tweet ({username, tweet, photo}) {
                 <Username>{username}</Username>
                 <Payload>{tweet}</Payload>
             </Column>
-            {photo ? (
-                <Column>
+            <Column>
+              {photo ? (
                 <Photo src={photo} />
-                </Column>
-            ) : null}
+              ) : null}
+            </Column>
         </Wrapper>  
     );
 }
