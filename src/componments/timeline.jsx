@@ -61,34 +61,34 @@ function TimeLine () {
     //             collection(db, "tweets"),
     //             orderBy("createdAT", "desc")
     //         );
-    //         // const spanshot = await getDocs(tweetsQuery); // 생성된 query에 해당하는 문서를 가지고온다. 
-    //         // const tweets = spanshot.docs.map((doc) => {
-    //         //     const {tweet, createdAT, userId, username, photo} = doc.data();
-    //         //     return{
-    //         //         tweet,
-    //         //         createdAT,
-    //         //         userId,
-    //         //         username,
-    //         //         photo,
-    //         //         id: doc.id,
-    //         //     };
-    //         // });
-    //         // setTweets(tweets);
+    //         const spanshot = await getDocs(tweetsQuery); // 생성된 query에 해당하는 문서를 가지고온다. 
+    //         const tweets = spanshot.docs.map((doc) => {
+    //             const {tweet, createdAT, userId, username, photo} = doc.data();
+    //             return{
+    //                 tweet,
+    //                 createdAT,
+    //                 userId,
+    //                 username,
+    //                 photo,
+    //                 id: doc.id,
+    //             };
+    //         });
+    //         setTweets(tweets);
     //         // 이 함수는 데이터베이스 및 쿼리와 실시간 연결을 하고 새 요소가 생성, 삭제, 업데이트 시에 알려준다.
-    //         // unsubscribe = await onSnapshot(tweetsQuery, (snapShot) => { // 이 함수는 계속 데이터베이스를 읽기 때문에 무료 버전서는 사용시에 요금을 내야한다.
-    //         //     const tweets = snapShot.docs.map((doc) => {
-    //         //         const {tweet, createdAT, userId, username, photo} = doc.data();
-    //         //         return{
-    //         //             tweet,
-    //         //             createdAT,
-    //         //             userId, 
-    //         //             username,
-    //         //             photo,
-    //         //             id: doc.id,
-    //         //         };
-    //         //     });
-    //         //     setTweets(tweets);
-    //         // })
+    //         unsubscribe = await onSnapshot(tweetsQuery, (snapShot) => { // 이 함수는 계속 데이터베이스를 읽기 때문에 무료 버전서는 사용시에 요금을 내야한다.
+    //             const tweets = snapShot.docs.map((doc) => {
+    //                 const {tweet, createdAT, userId, username, photo} = doc.data();
+    //                 return{
+    //                     tweet,
+    //                     createdAT,
+    //                     userId, 
+    //                     username,
+    //                     photo,
+    //                     id: doc.id,
+    //                 };
+    //             });
+    //             setTweets(tweets);
+    //         })
             
     //     }
     //     fetchTweets();
