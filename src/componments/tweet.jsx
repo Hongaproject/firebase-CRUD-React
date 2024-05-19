@@ -59,6 +59,7 @@ function Tweet ({username, tweet, photo, userId, id}) {
 
       }
     }
+    
 
     return(
         <Wrapper>
@@ -77,6 +78,9 @@ function Tweet ({username, tweet, photo, userId, id}) {
 }
 
 export default Tweet;
+
+
+
 
 
 
