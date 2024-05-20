@@ -56,11 +56,12 @@ function TimeLine () {
     }, []);
 
     // useEffect(() => {
-    //     let unsubscribe : Unsubscribe | null = null;
+    //     let unsubscribe = null;
     //     const fetchTweets = async() => {
     //         const tweetsQuery = query( // query를 생성하는 부분. 
     //             collection(db, "tweets"),
-    //             orderBy("createdAT", "desc")
+    //             orderBy("createdAT", "desc"),
+    //             limit(15)
     //         );
     //         const spanshot = await getDocs(tweetsQuery); // 생성된 query에 해당하는 문서를 가지고온다. 
     //         const tweets = spanshot.docs.map((doc) => {
