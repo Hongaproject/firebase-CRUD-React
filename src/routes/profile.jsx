@@ -43,11 +43,36 @@ const Tweets = styled.div`
   gap: 10px;
 `;
 
+const EditNameContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+const NameChangeInput = styled.input`
+  padding: 10px;
+  font-size: 16px;
+`;
+
+const Button = styled.button`
+   background-color: tomato;
+   color: white;
+   font-weight: 600;
+   border: 0;
+   font-size: 12px;
+   padding: 5px 10px;
+   text-transform: uppercase;
+   border-radius: 5px;
+   cursor: pointer;
+ `;
 
 function Profile() {
     const user = auth.currentUser;
     const [avatar, setAvatar] = useState(user?.photoURL); // 로그인 유저가 이미지를 가지고 있는지 확인하는 용도
     const [tweets, setTweets] = useState([]);
+    const [name, setName] = useState(user?.displayName || "");
+    const [editingNameMod, setEditingNameMod] = useState(false);
+    const [nameLoading, setNameLoading] = useState(false);
     const onAvatarChange = async(e) => {
         const {files} = e.target;
         if(!user) return;
@@ -87,7 +112,28 @@ function Profile() {
     useEffect(() => {
       fetchTweets();
     }, []);
-    
+
+    const handleNameChange = (event) =>
+      setName(event.target.value);
+
+    const toggleEditName = () => setEditingNameMod(!editingNameMod);
+
+    const updateName = async () => {
+      if (nameLoading || !user) return;
+      try {
+        setNameLoading(true);
+        await updateProfile(user, {
+          displayName: name,
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setNameLoading(false);
+        setEditingNameMod(false);
+      }
+      
+    };
+
     return(
         <Wrapper>
             프로필 입니다.
@@ -107,6 +153,20 @@ function Profile() {
             </AvatarUpload>
             <AvatarInput id="avatar" type="file" accept="image/*" onChange={onAvatarChange} />
             <Name>{user?.displayName ? user.displayName : "Anonymous"}</Name>
+              {editingNameMod ? (
+                <EditNameContainer>
+                  <NameChangeInput
+                    type="text"
+                    placeholder="Enter Name"
+                    value={name}
+                    onChange={handleNameChange}
+                  />
+                  <Button onClick={updateName}>{nameLoading ? "Loading..." : "Update" }</Button>
+                  <Button onClick={toggleEditName}>Cancle</Button>
+                </EditNameContainer>
+              ) : (
+                <Button onClick={toggleEditName}>Change Name</Button>
+              )}
             <Tweets>
               {tweets.map((tweet) => (<Tweet key={tweet.id} {...tweet}/> ))}
             </Tweets>
